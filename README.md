@@ -1,40 +1,30 @@
-GradientDescent
-Ce projet comprend une classe GradientDescent ainsi qu'une fonction gradDescent.
+# Gradient Descent Algorithm for Function Minimization
 
-Classe GradientDescent
-La classe GradientDescent peut être utilisée pour minimiser une fonction en utilisant la descente de gradient. Elle comprend les fonctions suivantes:
+This repository contains a gradient descent algorithm for function minimization implemented in C++. The algorithm is provided both as a class and a standalone function. The implementation also includes an example of how to use the gradient descent algorithm to minimize a simple test function.
 
-grad(f, x, n) : calcule le gradient d'une fonction f en utilisant les variables x et le nombre de variables n.
-run(f, x0, n, eps, alpha) : effectue la descente de gradient sur une fonction f en utilisant un vecteur de variables initial x0, le nombre de variables n, une condition d'arrêt eps, et un taux d'apprentissage alpha.
-Fonction gradDescent
-La fonction gradDescent peut être utilisée pour minimiser une fonction en utilisant la descente de gradient. Les paramètres sont les suivants :
+## Class-based Implementation
 
-f : la fonction à minimiser
-x0 : vecteur de variables initiales
-n : nombre de variables
-eps : condition d'arrêt (lorsque tous les termes du gradient sont inférieurs à eps)
-alpha : taux d'apprentissage (taille du pas)
-Utilisation
-Téléchargez ou clonez le projet.
-Incluez le fichier gradient_descent.cpp dans votre projet.
-Créez une instance de la classe GradientDescent ou utilisez la fonction gradDescent pour minimiser votre fonction.
-c
-Copy code
-#include "gradient_descent.cpp"
+The class-based implementation is located in the `as_class` directory. The class is defined in the file `GradientDescent.hpp` and implements the gradient descent algorithm as a class named `GradientDescent`.
 
-int main()
-{
-    // utilisation de la classe GradientDescent
-    GradientDescent gradientDescent;
-    const double x0[] = {1, 2};
-    const unsigned int n = 2;
-    const double eps = 1e-6;
-    const double alpha = 0.1;
-    const double *result = gradientDescent.run(f, x0, n, eps, alpha);
-    
-    // utilisation de la fonction gradDescent
-    const double *result2 = gradDescent(f, x0, n, eps, alpha);
-    
-    return 0;
-}
-Notez que la fonction f doit être définie en dehors de la classe et de la fonction.
+The class has several methods for configuring and running the gradient descent algorithm:
+
+-   `setFunction`: sets the function to minimize
+-   `setInitialPoint`: sets the initial point for the optimization
+-   `setEpsilon`: sets the stop condition (when all terms of the gradient are less than epsilon)
+-   `setAlpha`: sets the learning rate (step size)
+-   `run`: runs the optimization
+-   `getResult`: returns the result of the optimization
+
+## Standalone Function
+
+The standalone function is located in the `as_function` directory and is defined in the file `gradient_descent.cpp`. The function is named `gradDescent` and provides a simpler way to use the gradient descent algorithm. The function takes as arguments the function to minimize, the initial point, the number of variables, the stop condition, and the learning rate. The function returns the optimized point and the number of iterations required to reach the optimized point.
+
+## Example
+
+An example of how to use the gradient descent algorithm is provided in the file `main.cpp`. The example minimizes a simple test function. The example demonstrates how to use both the class-based implementation and the standalone function.
+
+## Requirements
+
+This implementation requires a C++11 compiler. The provided makefile is set up to compile with GCC, but it can be easily modified to compile with another compiler.
+
+## License
