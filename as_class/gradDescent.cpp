@@ -2,10 +2,12 @@
 
 gradDescent::gradDescent(const double (*f)(const double *x), double *x, const unsigned int &num_dimensions)
 {
+    // initialize the class
+
     this->f = f;
     this->x = x;
     this->num_dimensions = num_dimensions;
-    grad = new double[num_dimensions];
+    grad = new double[num_dimensions];// allocate memory for the gradient
 
     // default parameters
     stop_squared_grad_norm = 1e-6;
@@ -35,14 +37,15 @@ int gradDescent::find_gradient()
     squared_gradient_norm=0;// reset the gradient norm
     for (unsigned int i = 0; i < num_dimensions; i++)// calculate the gradient
     {   
+        // finite difference : f'(x) = lim h->0 (f(x+h/2)-f(x-h/2))/h
         x_i_save = x[i];// save the value of x[i]
-        x[i] = x_i_save+half_step_size;
-        this->grad_part = f(x);
-        x[i] = x_i_save-half_step_size;
-        this->grad_part -= f(x);
+        x[i] = x_i_save+half_step_size;//x+h/2
+        this->grad_part = f(x);// f(x+h/2)
+        x[i] = x_i_save-half_step_size;// x-h/2
+        this->grad_part -= f(x);// f(x+h/2)-f(x-h/2)
         x[i] = x_i_save;
-        grad[i] = this->grad_part / step_size;
-        squared_gradient_norm += grad[i] * grad[i];
+        grad[i] = this->grad_part / step_size;// f'(x)
+        squared_gradient_norm += grad[i] * grad[i];// calculate the gradient norm (squared)
     }
     return 0;
 }
@@ -57,7 +60,7 @@ const int gradDescent::iterate()
         return 0;
 
     for (unsigned int i = 0; i < num_dimensions; i++)// update the variable
-        x[i] -= learning_rate * grad[i];
+        x[i] -= learning_rate * grad[i];// x = x - learning_rate * grad
     
     iteration_count++;    
     return 1;
