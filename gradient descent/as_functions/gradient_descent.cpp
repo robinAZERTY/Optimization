@@ -106,5 +106,5 @@ const double *gradDescent(const double (*f)(const double *x), const double *x0, 
     }
     x[n] = count;
     return x;
-}
+};
 #endif

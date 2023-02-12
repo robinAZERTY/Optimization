@@ -59,6 +59,6 @@ private:
     double x_i_save;
     double half_step_size;
 };
-#include "gradDescent.cpp"
+#include "gradient_descent.cpp"
 
 #endif // GRADDESCENT_H

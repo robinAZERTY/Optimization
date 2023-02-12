@@ -1,4 +1,4 @@
-#include "gradDescent.h"
+#include "gradient_descent.h"
 #include <iostream>
 #include <cmath>
 

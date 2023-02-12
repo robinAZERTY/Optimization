@@ -1,4 +1,4 @@
-#include "gradDescent.h"
+#include "gradient_descent.h"
 
 gradDescent::gradDescent(const double (*f)(const double *x), double *x, const unsigned int &num_dimensions)
 {
