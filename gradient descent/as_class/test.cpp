@@ -85,7 +85,12 @@ void test(gradDescent &gd, const double *X_expectation)
     {
         quad_diff += (gd.get_x()[i] - X_expectation[i]) * (gd.get_x()[i] - X_expectation[i]);
     }
+    if (quad_diff > 1e-6)
+        //change color to red
+        std::cout << "\033[1;31m";
     std::cout << quad_diff << std::endl;
+    //reset color
+    std::cout << "\033[0m";
 }
 
 int main()
