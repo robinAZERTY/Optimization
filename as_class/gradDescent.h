@@ -1,60 +1,63 @@
 #ifndef GRADDESCENT_H
 #define GRADDESCENT_H
 
+
+/*
+this class is a gradient descent algorithm
+It can be use to find the vector x that minimize a function f(x)
+So the definition domain R^n->R (n is the dimension of the vector x)
+*/
 class gradDescent
 {
 public:
-    gradDescent(const double (*f)(const double *x), double *x0, const int &n);
+    gradDescent(const double (*f)(const double *x), double *x, const unsigned int &num_dimensions);
     ~gradDescent();
 
-    void setEps(const double &eps) { this->eps = eps; }
-    void setLearningRate(const double &lambda) { this->alpha = 1/lambda; };
-    void setStepSize(const double &step_size) { this->step_size = step_size; };
-    void setAlphaRange(const double &min_alpha, const double &max_alpha)
-    {
-        this->min_alpha = min_alpha;
-        this->max_alpha = max_alpha;
-    };
-    void enableAdaptiveRate() { enableAlphaUpdate = true; }// enable the update of alpha
-    void disableAdaptiveRate() { enableAlphaUpdate = false; }// disable the update of alpha
+    // setters 
+    void set_stop_grad_norm(const double &stop_grad_norm) { this->stop_squared_grad_norm = stop_grad_norm*stop_grad_norm; }
+    void set_learning_rate(const double &learning_rate) { this->learning_rate = learning_rate; }
+    void set_step_size(const double &step_size) { this->step_size = step_size; this->half_step_size = step_size/2;}
+    void set_max_iterations(const unsigned int &max_iterations) { this->max_iterations = max_iterations; }
 
-    const double *getGrad() { return g;}
-    const double *getX() { return x; }
-    const double getMin() { return f(x);}
-    const double getGradQuadNorm() { return gradQuadNorm;}
-    const unsigned int getCount() { return count;}
+    // accessors
+    const double *get_grad() { return grad;}
+    const double *get_x() { return x; }
+    const double get_f_x() { return f(x);}
+    const double get_squared_gradient_norm() { return squared_gradient_norm;}
+    const unsigned int get_iteration_count() { return iteration_count;}
+    const unsigned int get_num_dimensions() {return num_dimensions;}
+    const double get_f_defined() {return f_defined;}
 
-    const unsigned int getN() {return n;}
-    const int iterate();
-    const bool isF_ok() {return f_ok;}
+    // methods
+   const int iterate();
     
 
 private:
-    void updateAlpha();// update the learning rate alpha
-    void calcGrad();// calculate the gradient and its norm
 
-    // parameter or varialbles for gradient computation
-    double *g, *g_prev;                 // gradient
-    double gradQuadNorm;                // norm of the gradient
-    double step_size = 1e-6;            // step_size for the finite difference method
-    
-    //parameter or variables for optimization
-    unsigned int n;                     // number of variable (dimension)
-    const double (*f)(const double *x); // function to minimize
-    double *x, *x_prev;                 // vector of variable
+    int find_gradient();// calculate the gradient and its norm in same time
 
-    // parameter for control of the optimization
-    double dx_max = 1e60;               // maximum step size (to avoid divergent)
-    double eps = 1e-6;                  // stop condition (when the norm of the gradient is smaller than eps)
-    bool enableAlphaUpdate = true;      // enable the update of alpha 
-    double alpha = 1;                   // learning rate
-    double min_alpha = 1e-10;            // minimum value for alpha
-    double max_alpha = 1e10;             // maximum value for alpha
-    unsigned int max_count = 1000;      // maximum number of iteration
-    unsigned int count = 0;             // number of iteration
-    bool f_ok = true;                   // flag to check if the function is divergent or invalid
-   
-    
+    // variables and parameters
+    const double (*f)(const double *x);// function to minimize
+    double *x;// //reference to a list of double (the variable to optimize)
+    double *grad;// gradient of f
+
+
+    // there are references
+    double stop_squared_grad_norm;// precision
+    double learning_rate;// learning rate (step size)
+    double step_size;// step size of finite difference for derivative calculation
+    double squared_gradient_norm;// squared norm of the gradient
+
+    unsigned int iteration_count;// number of iteration
+    unsigned int max_iterations;// maximum number of iteration
+    unsigned int num_dimensions;// number of variable (dimension)
+
+    bool f_defined;// true if the function is well defined
+
+    // theses variables can be temporary used in methods but to avoid memory assignation, they are declared here, only once
+    double grad_part;
+    double x_i_save;
+    double half_step_size;
 };
 #include "gradDescent.cpp"
 

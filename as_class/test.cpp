@@ -67,24 +67,24 @@ void test(gradDescent &gd, const double *X_expectation)
     {
         status = gd.iterate();
     }
-   std::cout << gd.getCount() << "\t|f(";
-   for(unsigned int i = 0; i < gd.getN(); i++)
+   std::cout << gd.get_iteration_count() << "\t|f(";
+   for(unsigned int i = 0; i < gd.get_num_dimensions(); i++)
    {
 
-        std::cout << gd.getX()[i];
-        if (i < gd.getN() - 1)
+        std::cout << gd.get_x()[i];
+        if (i < gd.get_num_dimensions() - 1)
             std::cout << ",";
    }
-    std::cout << ") = "<<gd.getMin()<<"\t|(";
-    for (unsigned int i = 0; i < gd.getN(); i++)
+    std::cout << ") = "<<gd.get_f_x()<<"\t|(";
+    for (unsigned int i = 0; i < gd.get_num_dimensions(); i++)
     {
-        std::cout << X_expectation[i]<<(i<gd.getN()-1?",":"");
+        std::cout << X_expectation[i]<<(i<gd.get_num_dimensions()-1?",":"");
     }
     std::cout << ")\t|";
     double quad_diff = 0;
-    for (unsigned int i = 0; i < gd.getN(); i++)
+    for (unsigned int i = 0; i < gd.get_num_dimensions(); i++)
     {
-        quad_diff += (gd.getX()[i] - X_expectation[i]) * (gd.getX()[i] - X_expectation[i]);
+        quad_diff += (gd.get_x()[i] - X_expectation[i]) * (gd.get_x()[i] - X_expectation[i]);
     }
     std::cout << quad_diff << std::endl;
 }
@@ -107,8 +107,6 @@ int main()
     gradDescent gd7(Rastrigin, new double[2]{ -0.1,-0.2 }, 2);
     test(gd7, new double[2]{ 0, 0});
     gradDescent gd8(Himmelblau, new double[2]{0,0}, 2);//in this case, the adaptive learning rate is not working
-    gd8.disableAdaptiveRate();
-    gd8.setLearningRate(0.02);
     test(gd8, new double[2]{ 3, 2});
     return 0;
 }

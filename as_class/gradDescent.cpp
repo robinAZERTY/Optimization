@@ -1,115 +1,64 @@
 #include "gradDescent.h"
 
-gradDescent::gradDescent(const double (*f)(const double *x), double *x0, const int &n)
+gradDescent::gradDescent(const double (*f)(const double *x), double *x, const unsigned int &num_dimensions)
 {
     this->f = f;
-    this->n = n;
-    this->x = new double[n];
-    this->g = new double[n];
-    this->x_prev = new double[n];
-    this->g_prev = new double[n];
-    for (unsigned int i = 0; i < n; i++)
-    {
-        this->x[i] = x0[i];
-    }
+    this->x = x;
+    this->num_dimensions = num_dimensions;
+    grad = new double[num_dimensions];
 
-    //test if the function works
-    if(f(x) == 1.0/0.0 || f(x) == -1.0/0.0 || f(x) != f(x))
-        f_ok = false;
-}
+    // default parameters
+    stop_squared_grad_norm = 1e-6;
+    learning_rate = 0.7;
+    step_size = 1e-6;
+    max_iterations = 1000;
+    iteration_count = 0;
+
+    step_size = 1e-6;
+    half_step_size = step_size/2;
+
+    //verify if the function is well defined
+    f_defined = !(f(x) != f(x))*!(f(x)==1.0/0.0)*!(f(x)==-1.0/0.0); // if f(x) is nan, inf or -inf, f_defined is false
+    }
 
 gradDescent::~gradDescent()
 {
-    delete[] x;
-    delete[] g;
-    delete[] x_prev;
-    delete[] g_prev;
+    delete[] grad;
 }
 
-void gradDescent::calcGrad()
-{   // calculate the gradient and its norm
-    // the gradient of a function f is a vector of partial derivatives
-    // f is the function to minimize
-    // n is the number of variable (dimension)
-    // x is the vector of variable
 
-    // opptimization: use the finite difference method to calculate the partial derivatives
-    // 
-
-    gradQuadNorm = 0;
-    for (unsigned int i = 0; i < n; i++)
-    {
-        // change the i-th variable
-        x[i] += step_size / 2.0;
-        const double f1 = f(x);
-        x[i] -= step_size;
-        const double f2 = f(x);
-        x[i] += step_size / 2.0;
-        const double diff = f1 - f2;
-        g[i] = diff / step_size; // calculate the partial derivative as the limit of (f(x-h) - f(x+h))/2h
-        gradQuadNorm += g[i] * g[i];
-    }
-}
-void gradDescent::updateAlpha()
+int gradDescent::find_gradient()
 {
-    // update the learning rate (step size) alpha
-    // alpha is the step size that minimizes the quadratic approximation of the function
-    // f is the function to minimize
-    // n is the number of variable (dimension)
-    // x is the vector of variable
-    // g is the gradient
-    // x_prev is the vector of variable at the previous iteration
-    // g_prev is the gradient at the previous iteration
+    // this methode will be called many times and fastly.
+    // it have to be as fast as possible
 
-    double alpha_num = 0;
-    double alpha_den = 0;
-    for (unsigned int i = 0; i < n; i++)
-    {
-        alpha_num += (x[i] - x_prev[i]) * (g[i] - g_prev[i]);
-        alpha_den += (x[i] - x_prev[i]) * (x[i] - x_prev[i]);
-        x_prev[i] = x[i];
-        g_prev[i] = g[i];
+    squared_gradient_norm=0;// reset the gradient norm
+    for (unsigned int i = 0; i < num_dimensions; i++)// calculate the gradient
+    {   
+        x_i_save = x[i];// save the value of x[i]
+        x[i] = x_i_save+half_step_size;
+        this->grad_part = f(x);
+        x[i] = x_i_save-half_step_size;
+        this->grad_part -= f(x);
+        x[i] = x_i_save;
+        grad[i] = this->grad_part / step_size;
+        squared_gradient_norm += grad[i] * grad[i];
     }
-    alpha = alpha_num / alpha_den;
-
-    if (alpha < min_alpha)
-        alpha = min_alpha;
-    else if (alpha > max_alpha|| alpha != alpha)
-        alpha = max_alpha;
-       
+    return 0;
 }
 
 
 const int gradDescent::iterate()
 {
-    if (count >= max_count)
-        return 0;// stop (maximum number of iteration reached)
-    else if (f_ok == false)
-        return -1;// stop with error (the function is not defined
+    
+    find_gradient();
 
-    // calculate the gradient and its norm
-    calcGrad();
+    if (squared_gradient_norm < stop_squared_grad_norm || iteration_count>=max_iterations)// if the gradient norm is small enough, stop
+        return 0;
 
-    // check if the gradient is small enough
-    if (gradQuadNorm < eps*eps)
-        return 0;// stop
-
-    if(enableAlphaUpdate) 
-        updateAlpha();
-        
-        
-    // update the variable
-    for (unsigned int i = 0; i < n; i++)
-    {   
-        const double dx = -g[i]/alpha;
-        if (dx*dx > dx_max)
-        {
-            // the i-th variable is divergent 
-            x[i] = (x[i]<0) ? -1.0/0.0 : 1.0/0.0;
-            return -2;// stop with error (the i-th variable is divergent)
-        }
-        x[i] += dx;
-    }
-    count++;
-    return 1;// continue
+    for (unsigned int i = 0; i < num_dimensions; i++)// update the variable
+        x[i] -= learning_rate * grad[i];
+    
+    iteration_count++;    
+    return 1;
 }
