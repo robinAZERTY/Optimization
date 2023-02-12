@@ -12,6 +12,7 @@ with the function you can't do that, you have to wait until the function return
 //#define USE_FUNCTION
 
 #include <stdio.h>
+
 const double f(const double *x)// the function to minimize
 {
     return x[0]*x[0]+x[1]*x[1];

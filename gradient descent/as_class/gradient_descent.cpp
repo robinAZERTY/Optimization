@@ -37,7 +37,7 @@ int gradDescent::find_gradient()
     squared_gradient_norm=0;// reset the gradient norm
     for (unsigned int i = 0; i < num_dimensions; i++)// calculate the gradient
     {   
-        // finite difference : f'(x) = lim h->0 (f(x+h/2)-f(x-h/2))/h
+        // The central difference : f'(x) = lim h->0 (f(x+h/2)-f(x-h/2))/h
         x_i_save = x[i];// save the value of x[i]
         x[i] = x_i_save+half_step_size;//x+h/2
         this->grad_part = f(x);// f(x+h/2)

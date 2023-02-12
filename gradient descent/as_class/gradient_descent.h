@@ -45,7 +45,7 @@ private:
     // there are references
     double stop_squared_grad_norm;// precision
     double learning_rate;// learning rate (step size)
-    double step_size;// step size of finite difference for derivative calculation
+    double step_size;// step size of The central difference for derivative calculation
     double squared_gradient_norm;// squared norm of the gradient
 
     unsigned int iteration_count;// number of iteration

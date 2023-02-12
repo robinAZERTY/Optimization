@@ -4,7 +4,6 @@
 
 #define PI 3.14159265358979323846
 
-
 const double f1(const double *x)
 {
     return x[0] * x[0] + x[1] * x[1];//simple quadratic function
