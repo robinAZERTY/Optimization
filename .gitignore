@@ -1,4 +1,4 @@
 .gitignore
 .vscode/
 *.exe
-.adaptive_learning_rate/
+adaptive_learning_rate/
