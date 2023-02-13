@@ -58,13 +58,17 @@ const double Himmelblau(const double *x)
     return (x[0] * x[0] + x[1] - 11) * (x[0] * x[0] + x[1] - 11) + (x[0] + x[1] * x[1] - 7) * (x[0] + x[1] * x[1] - 7);
 }
 
+//#include "../../adaptive_learning_rate\adaptive_learning_rate.cpp"
 
 void test(gradDescent &gd, const double *X_expectation)
 {   
     int status = 1;
+    //adaptive_learning_rate gd_adaptive(gd,0.1);
+    
     while (status==1)
     {
         status = gd.iterate();
+        //gd.set_learning_rate(gd_adaptive.get_learning_rate());
     }
    std::cout << gd.get_iteration_count() << "\t|f(";
    for(unsigned int i = 0; i < gd.get_num_dimensions(); i++)
@@ -92,6 +96,8 @@ void test(gradDescent &gd, const double *X_expectation)
     //reset color
     std::cout << "\033[0m";
 }
+
+
 
 int main()
 {   

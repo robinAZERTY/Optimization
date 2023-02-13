@@ -6,6 +6,10 @@
 this class is a gradient descent algorithm
 It can be use to find the vector x that minimize a function f(x)
 So the definition domain R^n->R (n is the dimension of the vector x)
+
+author : robinAZERTY
+date : 2023-02-13
+
 */
 class gradDescent
 {
@@ -14,8 +18,9 @@ public:
     ~gradDescent();
 
     // setters 
+    void set_learning_rate(double *learning_rate) { this->learning_rate = learning_rate; }
+    void set_learning_rate(const double &learning_rate) { for (unsigned int i=0; i<num_dimensions; i++) this->learning_rate[i] = learning_rate; }
     void set_stop_grad_norm(const double &stop_grad_norm) { this->stop_squared_grad_norm = stop_grad_norm*stop_grad_norm; }
-    void set_learning_rate(const double &learning_rate) { this->learning_rate = learning_rate; }
     void set_step_size(const double &step_size) { this->step_size = step_size; this->half_step_size = step_size/2;}
     void set_max_iterations(const unsigned int &max_iterations) { this->max_iterations = max_iterations; }
 
@@ -40,11 +45,11 @@ private:
     const double (*f)(const double *x);// function to minimize
     double *x;// //reference to a list of double (the variable to optimize)
     double *grad;// gradient of f
+    double *learning_rate;// learning rate (can be different for each variable)
 
 
     // there are references
     double stop_squared_grad_norm;// precision
-    double learning_rate;// learning rate (step size)
     double step_size;// step size of The central difference for derivative calculation
     double squared_gradient_norm;// squared norm of the gradient
 

@@ -34,7 +34,6 @@ int main()
     while (gd.iterate() != 0);// iterate until the gradient norm is small enough (or error)
     printf("minimum found at (%f,%f) in %i iteration", x[0], x[1], gd.get_iteration_count());
 
-
     return 0;
 }
 

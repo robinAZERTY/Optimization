@@ -8,10 +8,12 @@ gradDescent::gradDescent(const double (*f)(const double *x), double *x, const un
     this->x = x;
     this->num_dimensions = num_dimensions;
     grad = new double[num_dimensions];// allocate memory for the gradient
+    learning_rate = new double[num_dimensions];// allocate memory for the learning rate
+    for (unsigned int i = 0; i < num_dimensions; i++)
+        learning_rate[i] = 0.7;
 
     // default parameters
     stop_squared_grad_norm = 1e-6;
-    learning_rate = 0.7;
     step_size = 1e-6;
     max_iterations = 1000;
     iteration_count = 0;
@@ -60,7 +62,7 @@ const int gradDescent::iterate()
         return 0;
 
     for (unsigned int i = 0; i < num_dimensions; i++)// update the variable
-        x[i] -= learning_rate * grad[i];// x = x - learning_rate * grad
+        x[i] -= learning_rate[i] * grad[i];// x = x - learning_rate * grad
     
     iteration_count++;    
     return 1;
