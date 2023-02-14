@@ -23,6 +23,7 @@ Gradient descent
 ----------------
 The gradient descent is the most basic optimization algorithm. It is very simple to implement.
 The idea for minimizing a given function f(Soit $\mathbf{v}$ un vecteur dans l'espace.
+Soit $\vec{v}$ un vecteur dans l'espace.
 
 how to use it
 -------------
