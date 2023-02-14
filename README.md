@@ -7,7 +7,9 @@ Imagine you have a function that have to be configured with a lot of parameters.
 
 one real example
 ----------------
-I buid theses libraries with one goal in mind. One of my projects is to build inertial navigation system (INS) with several sensors : accelerometers, gyroscopes, [...] and magnetometers. One part consist of calibrating the sensors. For the magnetometers, we know the magnetic field vector is constant at a constant place. So we must be able to aquire mesurements of a vector wich have the same lenght at each time. In other words, no mater in what direction the sensor is pointing, the vector must have the same lenght. If we plot a lot of points constructed by x, y and z composants, we must have a sphere. However, the sensor is not perfect and they are distortions blaming the environment (electronics). For the X axis, the gain can be deferent to 1 and the offset can be deferent to 0. The effect is that the sphere is not centered on the origin and it is not a perfect sphere. It looks like a ellipsoid. But that's not it. X, Y and Z are not perfectly orthogonal. The rotation matrix (3 by 3) quatify these disalignment.
+I buid theses libraries with one goal in mind. One of my projects is to build inertial navigation system (INS) with several sensors : accelerometers, gyroscopes, [...] and magnetometers. One part consist of calibrating the sensors.
+For the magnetometers, we know the magnetic field vector is constant at a constant place. So we must be able to aquire mesurements of a vector wich have the same lenght at each time. In other words, no mater in what direction the sensor is pointing, the vector must have the same lenght. If we plot a lot of points constructed by x, y and z composants, we must have a sphere. 
+However, the sensor is not perfect and they are distortions blamming the environment (electronics). For the X axis, the gain can be diferent to 1 and the offset can be deferent to 0. The effect is that the sphere is not centered on the origin and it is not a perfect sphere. It looks like a ellipsoid. But that's not it. X, Y and Z sensors are not perfectly orthogonal. The rotation matrix (3 by 3) quantify these disalignment. The ellispoid is turned.
 Finaly, we have 3*2+3*3=15 parameters to find each time we want to calibrate the sensor. Good lock for find the best combination of parameters by hand. We can also use the least square method. But gradient descent is very interesting and polyvalent. It can be used for a lot of different problems.
 
 
@@ -16,6 +18,11 @@ Finaly, we have 3*2+3*3=15 parameters to find each time we want to calibrate the
 1. Gradient descent
 2. Stochastic gradient descent
 3. Adaptive moment estimator
+
+Gradient descent
+----------------
+The gradient descent is the most basic optimization algorithm. It is very simple to implement.
+The idea for minimizing a given function f(Soit $\mathbf{v}$ un vecteur dans l'espace.
 
 how to use it
 -------------
