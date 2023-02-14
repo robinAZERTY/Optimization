@@ -23,11 +23,21 @@ Finaly, we have 3*2+3*3=15 parameters to find each time we want to calibrate the
 
 Gradient descent
 ----------------
-The gradient descent is the most basic optimization algorithm. It is very simple to implement.
+The gradient descent is the most basic optimization algorithm.
+The idea is to modify a composant of $\vec{v}$ one by one. For each modification, we seed how the cost function change. In fact, we buid the gradient of $f(\vec{v})$. Knowing it, we are able to slitly modify $\vec{v}$ in the opposit direction of the gradient and approch the minimum of the cost function.
 
+Stochastic gradient descent
+---------------------------
+Stochastic gradient descent (SGD) is a variant of gradient descent that is commonly used for large datasets or when the computation of the full gradient is expensive. The idea of SGD is to randomly select a subset of the data (a mini-batch) and use this mini-batch to compute an estimate of the gradient of the cost function. This estimate is then used to update the parameters in the same way as in standard gradient descent. The process is repeated multiple times with different mini-batches until convergence.
 
+Adaptive moment estimator
+-------------------------
+Adaptive moment estimation (Adam) is another variant of gradient descent that adapts the learning rate for each parameter based on estimates of the first and second moments of the gradient. The algorithm maintains a decaying average of past gradients and their squares, and uses these estimates to scale the learning rate for each parameter. Adam is generally considered to be more robust and efficient than standard gradient descent and its variants, especially in the presence of sparse gradients or noisy data.
 
-how to use it
--------------
-The first step is to define the cost function of your problem.
-The second step is to define the gradient function of your cost function. (it can be done by central difference if you don't know how to do it)
+How to use optimization algorithms
+----------------------------------
+To use optimization algorithms, you need to define a cost function that quantifies the performance of your system with respect to the parameters you want to optimize. This cost function can be based on any criteria that you care about, such as accuracy, speed, or cost. You also need to define the set of parameters you want to optimize (i.e., $\vec{v}$ in the example above).
+
+Once you have defined the cost function and the set of parameters, you can choose an optimization algorithm that suits your problem and your computational resources. Gradient descent and its variants are relatively easy to implement and work well for many problems, but may require a lot of computational resources for large datasets. Adam is more efficient for many problems, but may require more tuning of the hyperparameters. There are many other optimization algorithms available, each with their own advantages and disadvantages.
+
+In practice, you may need to experiment with different optimization algorithms, learning rates, and other hyperparameters to find the combination that works best for your problem. You can also use techniques like early stopping, regularization, and data augmentation to improve the performance of your system.
