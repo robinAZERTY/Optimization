@@ -11,8 +11,7 @@ find the best $\vec{v}$ wich minimize the cost function $f(\vec{v})$.
 
 Gradient descent
 ----------------
-The gradient descent is the most basic optimization algorithm.
-The idea is to modify a composant of $\vec{v}$ one by one. For each modification, we seed how the cost function change. In fact, we buid the gradient of $f(\vec{v})$. Knowing it, we are able to slitly modify $\vec{v}$ in the opposit direction of the gradient and approch the minimum of the cost function.
+Gradient descent is the most basic optimization algorithm. The idea is to modify a component of $\vec{v}$ one by one. For each modification, we see how the cost function changes. In fact, we build the gradient of $f(\vec{v})$. Knowing it, we are able to slightly modify $\vec{v}$ in the opposite direction of the gradient and approach the minimum of the cost function.
 
 Stochastic gradient descent
 ---------------------------
@@ -32,11 +31,14 @@ In practice, you may need to experiment with different optimization algorithms, 
 
 why ?
 -----
-Imagine you have a function that have to be configured with a lot of parameters. There is only one combination of parameters that will give you the best result. The problem is that you don't know what is the best combination of parameters. You can try a lot of combinations and see which one is the best. But it will take a lot of time. So you can use an optimization algorithm to find the best combination of parameters.
+Imagine you have a function that has to be configured with a lot of parameters. There is only one combination of parameters that will give you the best result. The problem is that you don't know what the best combination of parameters is. You can try a lot of combinations and see which one is the best. But it will take a lot of time. So you can use an optimization algorithm to find the best combination of parameters.
 
-one real example
+One real example
 ----------------
-I buid theses libraries with one goal in mind. One of my projects is to build inertial navigation system (INS) with several sensors : accelerometers, gyroscopes, [...] and magnetometers. One part consist of calibrating the sensors.
-For the magnetometers, we know the magnetic field vector is constant at a constant place. So we must be able to aquire mesurements of a vector wich have the same lenght at each time. In other words, no mater in what direction the sensor is pointing, the vector must have the same lenght. If we plot a lot of points constructed by x, y and z composants, we must have a sphere. 
-However, the sensor is not perfect and they are distortions blamming the environment (electronics). For the X axis, the gain can be diferent to 1 and the offset can be deferent to 0. The effect is that the sphere is not centered on the origin and it is not a perfect sphere. It looks like a ellipsoid. But that's not it. X, Y and Z sensors are not perfectly orthogonal. The rotation matrix (3 by 3) quantify these disalignment. The ellispoid is turned.
-Finaly, we have 3*2+3*3=15 parameters to find each time we want to calibrate the sensor. Good lock for find the best combination of parameters by hand. We can also use the least square method. But gradient descent is very interesting and polyvalent. It can be used for a lot of different problems.
+I built these libraries with one goal in mind: to build an inertial navigation system (INS) using several sensors, including accelerometers, gyroscopes, and magnetometers. One part of this process involves calibrating the sensors.
+
+For magnetometers, we know that the magnetic field vector is constant at a fixed location, so we must be able to measure a vector with the same length each time, regardless of the sensor's orientation. This means that if we plot a lot of points constructed by x, y, and z components, we should get a sphere.
+
+However, the sensors are not perfect and are affected by distortions in the environment (e.g., electronics). For the X axis, the gain may be different from 1 and the offset may be different from 0. This causes the sphere to be off-center and not perfectly spherical, resembling an ellipsoid. Additionally, the X, Y, and Z sensors are not perfectly orthogonal, so the rotation matrix (a 3x3 matrix) quantifies these misalignments. As a result, the ellipsoid is rotated.
+
+In total, we have 3*2+3*3=15 parameters to find every time we want to calibrate the sensor. It would be challenging to find the best combination of parameters by hand, so we can use the least square method or gradient descent, which is a versatile and useful optimization algorithm that can be applied to many different problems.
