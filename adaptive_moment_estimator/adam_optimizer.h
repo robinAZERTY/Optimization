@@ -14,7 +14,7 @@ parameters :
 
 //definition of function type to be clear
 //pointer to a function that return a const double * and take a const double * and a const unsigned int as input
-typedef const double *(GradientDerivativeFunction)(const double *x, const unsigned int index_observation);
+typedef const double *(GradientDerivativeFunction)(double *x, const unsigned int index_observation);
 
 class adamOptimizer
 {
@@ -26,13 +26,19 @@ public:
     void set_beta2(const double &beta2) { this->beta2 = beta2; }
     void set_epsilon(const double &epsilon) { this->epsilon = epsilon; }
     void set_learning_rate(const double &learning_rate) {this->learning_rate = learning_rate; }
-    void set_max_iterations(const unsigned int &max_iterations) { this->max_iterations = max_iterations; }
     void set_hyperparameters(const double &beta1,const double &beta2,const double &epsilon,const double &learning_rate)
     {
         this->beta1=beta1;
         this->beta2=beta2;
         this->epsilon=epsilon;
         this->learning_rate=learning_rate;
+    }
+    void set_max_iterations(const unsigned int &max_iterations) { this->max_iterations = max_iterations; }
+    void set_max_absolute_variation(const double &max_absolute_variation) { this->max_absolute_variation = max_absolute_variation; }
+    void set_stop_criteria(const double &max_absolute_variation, const unsigned int &max_iterations)
+    {
+        this->max_absolute_variation = max_absolute_variation;
+        this->max_iterations = max_iterations;
     }
     // getters
     const double *get_x() const { return this->x; }
@@ -61,8 +67,11 @@ private:
     double beta2=0.99; // exponential decay rate for the second-moment estimates
     double epsilon=1e-8; // small value to avoid zero denominator
 
+    //stopping criteria
+    double max_absolute_variation=0.5;// maximum absolute variation of x_i between two consecutive iterations
     //double m_hat;
     //double v_hat;
+    double last_x_i;
 };
 #include "adam_optimizer.cpp"
 #endif // ADAM_OPTIMIZER_H
